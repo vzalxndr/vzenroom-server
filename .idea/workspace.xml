@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e392bd0a-70c4-4732-90e0-802cb31a19d9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fly.toml" beforeDir="false" afterPath="$PROJECT_DIR$/fly.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +83,7 @@
       <workItem from="1747135845011" duration="13138000" />
       <workItem from="1747149634820" duration="12153000" />
       <workItem from="1747250190414" duration="286000" />
-      <workItem from="1747300193140" duration="4359000" />
+      <workItem from="1747300193140" duration="4550000" />
     </task>
     <servers />
   </component>
