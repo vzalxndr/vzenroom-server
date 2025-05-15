@@ -71,6 +71,9 @@ def plot_data():
             plt.ylabel("Humidity (%)")
             plt.xlabel("Time")
             plt.grid(True)
+            plt.gca().xaxis_date()
+            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+            plt.xticks(rotation=45)
 
         elif plot_type == 'light':
             plt.plot(df['server_timestamp'], df['light'], marker='o', color=color or 'orange')
@@ -78,6 +81,9 @@ def plot_data():
             plt.ylabel("Light")
             plt.xlabel("Time")
             plt.grid(True)
+            plt.gca().xaxis_date()
+            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+            plt.xticks(rotation=45)
 
         elif plot_type == 'th_correlation':
             plt.scatter(df['temperature'], df['humidity'], color=color or 'purple')
@@ -85,6 +91,9 @@ def plot_data():
             plt.xlabel("Temperature (°C)")
             plt.ylabel("Humidity (%)")
             plt.grid(True)
+            plt.gca().xaxis_date()
+            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+            plt.xticks(rotation=45)
 
         elif plot_type == 'all':
             fig, axs = plt.subplots(4, 1, figsize=(10, 16))
@@ -93,22 +102,33 @@ def plot_data():
             axs[0].set_title("Temperature")
             axs[0].set_ylabel("°C")
             axs[0].grid(True)
+            axs[0].xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+            for label in axs[0].get_xticklabels():
+                label.set_rotation(45)
 
             axs[1].plot(df['server_timestamp'], df['humidity'], marker='o', color=color or 'green')
             axs[1].set_title("Humidity")
             axs[1].set_ylabel("%")
             axs[1].grid(True)
+            axs[1].xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+            for label in axs[1].get_xticklabels():
+                label.set_rotation(45)
 
             axs[2].plot(df['server_timestamp'], df['light'], marker='o', color=color or 'orange')
             axs[2].set_title("Light Level")
             axs[2].set_ylabel("Lux")
             axs[2].grid(True)
+            axs[2].xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d\n%H:%M'))
+            for label in axs[2].get_xticklabels():
+                label.set_rotation(45)
 
             axs[3].scatter(df['temperature'], df['humidity'], c=color or 'purple')
             axs[3].set_title("Humidity vs Temperature")
             axs[3].set_xlabel("Temp (°C)")
             axs[3].set_ylabel("Humidity (%)")
             axs[3].grid(True)
+            for label in axs[3].get_xticklabels():
+                label.set_rotation(45)
 
             fig.suptitle(f"Sensor Data: {title_range}", fontsize=16)
             plt.tight_layout(rect=[0, 0.03, 1, 0.97])

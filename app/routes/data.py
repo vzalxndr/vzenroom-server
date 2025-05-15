@@ -20,5 +20,5 @@ def receive_data():
     if "temperature" in data and data["temperature"] > temperature_threshold:
         send_telegram_alert(data)
 
-    print("Received and stored data:", data)
+    print("Received and stored data")
     return jsonify({"status": "success"}), 200
