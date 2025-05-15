@@ -7,6 +7,7 @@ class Config:
     TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
     TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
     FIREBASE_CRED_PATH = os.getenv("FIREBASE_CRED_PATH")
+    FIREBASE_CRED_JSON = os.getenv("FIREBASE_CRED_JSON")
 
     DEBUG = os.getenv("DEBUG", "false").lower() == "true"
     HOST = os.getenv("FLASK_RUN_HOST", "0.0.0.0")
