@@ -10,6 +10,7 @@ cryptography==44.0.2
 cycler==0.12.1
 firebase-admin==6.8.0
 Flask==3.1.0
+flask-cors==5.0.1
 fonttools==4.57.0
 google-api-core==2.25.0rc0
 google-api-python-client==2.169.0

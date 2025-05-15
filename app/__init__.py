@@ -3,10 +3,13 @@ import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 from flask import Flask
+from flask_cors import CORS
 from app.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+CORS(app)
 
 firebase_cred_json = os.environ.get("FIREBASE_CRED_JSON")
 
