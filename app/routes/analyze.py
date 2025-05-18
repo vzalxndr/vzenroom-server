@@ -2,6 +2,12 @@ from flask import request, jsonify
 from app import db, app
 from datetime import datetime, timedelta
 import pandas as pd
+import math
+
+def safe_round(value, digits=2):
+    if value is None or (isinstance(value, float) and math.isnan(value)):
+        return None
+    return round(float(value), digits)
 
 @app.route('/analyze')
 def analyze_data():
@@ -48,24 +54,24 @@ def analyze_data():
         "start": start.isoformat(),
         "end": end.isoformat(),
 
-        "avg_temp": round(float(df['temperature'].mean()), 2),
-        "max_temp": round(float(df['temperature'].max()), 2),
-        "min_temp": round(float(df['temperature'].min()), 2),
-        "median_temp": round(float(df['temperature'].median()), 2),
-        "temp_range": round(float(df['temperature'].max() - df['temperature'].min()), 2),
+        "avg_temp": safe_round(df['temperature'].mean()),
+        "max_temp": safe_round(df['temperature'].max()),
+        "min_temp": safe_round(df['temperature'].min()),
+        "median_temp": safe_round(df['temperature'].median()),
+        "temp_range": safe_round(df['temperature'].max() - df['temperature'].min()),
         "temp_exceeds_count": int(len(temp_exceeds)),
 
-        "avg_humidity": round(float(df['humidity'].mean()), 2),
-        "max_humidity": round(float(df['humidity'].max()), 2),
-        "min_humidity": round(float(df['humidity'].min()), 2),
-        "median_humidity": round(float(df['humidity'].median()), 2),
-        "humidity_range": round(float(df['humidity'].max() - df['humidity'].min()), 2),
+        "avg_humidity": safe_round(df['humidity'].mean()),
+        "max_humidity": safe_round(df['humidity'].max()),
+        "min_humidity": safe_round(df['humidity'].min()),
+        "median_humidity": safe_round(df['humidity'].median()),
+        "humidity_range": safe_round(df['humidity'].max() - df['humidity'].min()),
         "humidity_exceeds_count": int(len(humidity_exceeds)),
 
-        "std_light": round(float(df['light'].std()), 2),
-        "max_light": round(float(df['light'].max()), 2),
-        "min_light": round(float(df['light'].min()), 2),
-        "light_range": round(float(df['light'].max() - df['light'].min()), 2),
+        "std_light": safe_round(df['light'].std()),
+        "max_light": safe_round(df['light'].max()),
+        "min_light": safe_round(df['light'].min()),
+        "light_range": safe_round(df['light'].max() - df['light'].min()),
         "light_exceeds_count": int(len(light_exceeds))
     }
 
