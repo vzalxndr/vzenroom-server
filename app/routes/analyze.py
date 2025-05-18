@@ -68,6 +68,7 @@ def analyze_data():
         "humidity_range": safe_round(df['humidity'].max() - df['humidity'].min()),
         "humidity_exceeds_count": int(len(humidity_exceeds)),
 
+        "avg_light": safe_round(df['humidity'].mean()),
         "std_light": safe_round(df['light'].std()),
         "max_light": safe_round(df['light'].max()),
         "min_light": safe_round(df['light'].min()),
