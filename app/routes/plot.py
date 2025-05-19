@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from matplotlib.collections import LineCollection
 from matplotlib.colors import Normalize
 import numpy as np
+from scipy.interpolate import UnivariateSpline
 
 primary_color = '#4d6894'
 secondary_color = '#f0c851'
@@ -29,12 +30,32 @@ plt.rcParams['axes.facecolor'] = 'white'
 plt.rcParams['figure.facecolor'] = 'white'
 plt.rcParams['axes.edgecolor'] = '#cccccc'
 plt.rcParams['axes.linewidth'] = 0.8
+
+def apply_smoothing(x, y, k):
+    try:
+        if len(x) > k:
+            spline = UnivariateSpline(x, y, k=k)
+            return spline(x)
+    except Exception:
+        pass
+    return y
+
 @app.route('/plot')
 def plot_data():
     start_str = request.args.get('start')
     end_str = request.args.get('end')
     plot_type = request.args.get('type', 'all')
     color = request.args.get('color', None)
+
+    smooth_k_raw = request.args.get('smooth', None)
+    smooth_k = None
+    if smooth_k_raw is not None:
+        try:
+            smooth_k = int(smooth_k_raw)
+            if smooth_k < 1 or smooth_k > 5:
+                smooth_k = None
+        except ValueError:
+            pass
 
     if not start_str:
         return jsonify({"error": "No start date provided"}), 400
@@ -68,6 +89,8 @@ def plot_data():
         if plot_type == 'temperature':
             x = df['server_timestamp'].map(mdates.date2num)
             y = df['temperature']
+            if smooth_k:
+                y = apply_smoothing(x, y, smooth_k)
 
             points = np.array([x, y]).T.reshape(-1, 1, 2)
             segments = np.concatenate([points[:-1], points[1:]], axis=1)
@@ -89,6 +112,8 @@ def plot_data():
         elif plot_type == 'humidity':
             x = df['server_timestamp'].map(mdates.date2num)
             y = df['humidity']
+            if smooth_k:
+                y = apply_smoothing(x, y, smooth_k)
             plt.plot(x, y, color=color or primary_color, linewidth=1.5)
             plt.title(f"Humidity from {title_range}")
             plt.ylabel("Humidity (%)")
@@ -102,6 +127,8 @@ def plot_data():
         elif plot_type == 'light':
             x = df['server_timestamp'].map(mdates.date2num)
             y = df['light']
+            if smooth_k:
+                y = apply_smoothing(x, y, smooth_k)
             plt.plot(x, y, color=color or primary_color, linewidth=1.5)
             plt.title(f"Light level from {title_range}")
             plt.ylabel("Light")
@@ -125,6 +152,8 @@ def plot_data():
 
             x_temp = df['server_timestamp'].map(mdates.date2num)
             y_temp = df['temperature']
+            if smooth_k:
+                y_temp = apply_smoothing(x_temp, y_temp, smooth_k)
             axs[0].plot(x_temp, y_temp, color=color or secondary_color, linewidth=1.5)
             axs[0].set_title("Temperature")
             axs[0].set_ylabel("°C")
@@ -136,6 +165,8 @@ def plot_data():
 
             x_hum = df['server_timestamp'].map(mdates.date2num)
             y_hum = df['humidity']
+            if smooth_k:
+                y_hum = apply_smoothing(x_hum, y_hum, smooth_k)
             axs[1].plot(x_hum, y_hum, color=color or primary_color, linewidth=1.5)
             axs[1].set_title("Humidity")
             axs[1].set_ylabel("%")
@@ -147,6 +178,8 @@ def plot_data():
 
             x_light = df['server_timestamp'].map(mdates.date2num)
             y_light = df['light']
+            if smooth_k:
+                y_light = apply_smoothing(x_light, y_light, smooth_k)
             axs[2].plot(x_light, y_light, color=color or secondary_color, linewidth=1.5)
             axs[2].set_title("Light Level")
             axs[2].set_ylabel("Lux")
