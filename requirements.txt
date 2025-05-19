@@ -49,6 +49,7 @@ python-dotenv==1.1.0
 pytz==2025.2
 requests==2.32.3
 rsa==4.9.1
+scipy==1.15.3
 six==1.17.0
 tzdata==2025.2
 uritemplate==4.1.1
